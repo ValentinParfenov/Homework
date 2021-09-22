@@ -8,11 +8,11 @@ protocol LoadWeatherDelegate {
 }
 
 class WeatherDataLoader: Object {
-    @objc dynamic var currentTemperature = "\(Double.self)"
-    @objc dynamic var feelsLikeTemperature = "\(Double.self)"
-    @objc dynamic var nameTown = "\(Double.self)"
-    @objc dynamic var minTemperature = "\(Double.self)"
-    @objc dynamic var maxTemperature = "\(Double.self)"
+    @objc dynamic var currentTemperature = ""
+    @objc dynamic var feelsLikeTemperature = ""
+    @objc dynamic var nameTown = ""
+    @objc dynamic var minTemperature = ""
+    @objc dynamic var maxTemperature = ""
 }
 
 class WeatherLoader {
@@ -22,52 +22,58 @@ class WeatherLoader {
     var delegate: LoadWeatherDelegate?
     
     func loadWeather () {
+        self.loadWeatherFromCache()
+        self.loadWeatherFromAPI()
+    }
+    
+    func loadWeatherFromCache () {
+        let weatherDataCache = realm.objects(WeatherDataLoader.self).last
+        
+        if weatherDataCache != nil {
+            DispatchQueue.main.async {
+                self.delegate?.loaded(
+                    currentTemperature: "\(weatherDataCache!.currentTemperature)",
+                    feelsLikeTemperature: "\(weatherDataCache!.feelsLikeTemperature)",
+                    minTemperature:"\(weatherDataCache!.minTemperature)",
+                    maxTemperature:"\(weatherDataCache!.maxTemperature)",
+                    nameTownLabel: weatherDataCache!.nameTown
+                )
+            }
+        }
+    }
+    
+    func loadWeatherFromAPI () {
         let key = "bc8fc8363c5c900dd10131ef7dfefcbb"
-        let town = "Lissabon"
+        let town = "Sydney"
         let urlCurrentWeather = "https://api.openweathermap.org/data/2.5/weather?q=\(town)&units=metric&appid=\(key)"
         let url = URL (string: urlCurrentWeather)
-            
-        var currentTemperature: Double?
-        var feelsLikeTemperature: Double?
-        var minTemperature: Double?
-        var maxTemperature: Double?
+        
+        let weatherAPIDataLoader = WeatherDataLoader()
 
-        let weatherData = realm.objects(WeatherDataLoader.self).last!
-        
-        DispatchQueue.main.async {
-        self.delegate?.loaded(
-            currentTemperature: "\(weatherData.currentTemperature)",
-            feelsLikeTemperature: "\(weatherData.feelsLikeTemperature)",
-            minTemperature:"\(weatherData.minTemperature)",
-            maxTemperature:"\(weatherData.maxTemperature)",
-            nameTownLabel: weatherData.nameTown
-        )
-        }
-        print(weatherData)
-        
         let task = URLSession.shared.dataTask(with: url!) { (data, response, error) in
             do {
                 let json = try JSONSerialization.jsonObject(with: data!, options: .mutableContainers) as! [String: AnyObject]
+
                 if let mainNS = json["main"] {
-                    currentTemperature = mainNS["temp"] as? Double
-                    feelsLikeTemperature = mainNS["feels_like"] as? Double
-                    minTemperature = mainNS["temp_min"] as? Double
-                    maxTemperature = mainNS["temp_max"] as? Double
-                    print(json)
+                    weatherAPIDataLoader.currentTemperature = String(describing: mainNS["temp"] as! Double)
+                    weatherAPIDataLoader.feelsLikeTemperature = String(describing: mainNS["feels_like"] as! Double)
+                    weatherAPIDataLoader.minTemperature = String(describing: mainNS["temp_min"] as! Double)
+                    weatherAPIDataLoader.maxTemperature = String(describing: mainNS["temp_max"] as! Double)
+                    weatherAPIDataLoader.nameTown = town
                 }
-                
+
                 DispatchQueue.main.async {
                     self.delegate?.loaded(
-                        currentTemperature: "\(currentTemperature!)",
-                        feelsLikeTemperature: "\(feelsLikeTemperature!)",
-                        minTemperature:"\(minTemperature!)",
-                        maxTemperature:"\(maxTemperature!)",
-                        nameTownLabel: town
+                        currentTemperature: weatherAPIDataLoader.currentTemperature,
+                        feelsLikeTemperature: weatherAPIDataLoader.feelsLikeTemperature,
+                        minTemperature: weatherAPIDataLoader.minTemperature,
+                        maxTemperature: weatherAPIDataLoader.maxTemperature,
+                        nameTownLabel: weatherAPIDataLoader.nameTown
                     )
+
                     try! self.realm.write {
-                        self.realm.add(weatherData)
+                        self.realm.add(weatherAPIDataLoader)
                     }
-                    print(weatherData)
                 }
             }
             
