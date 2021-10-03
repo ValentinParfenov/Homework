@@ -21,6 +21,18 @@ class WeatherLoader {
     var weatherData: Results<WeatherDataLoader>!
     var delegate: LoadWeatherDelegate?
     
+    func loadFirst () {
+        let weatherLoadFirst = realm.objects(WeatherDataLoader.self)
+        let newWeather = WeatherDataLoader()
+        
+        if newWeather.currentTemperature.isEmpty, newWeather.feelsLikeTemperature.isEmpty, newWeather.nameTown.isEmpty, newWeather.minTemperature.isEmpty, newWeather.maxTemperature.isEmpty {
+            delegate?.loaded(currentTemperature: "-/-", feelsLikeTemperature: "-/-", minTemperature: "-/-", maxTemperature: "-/-", nameTownLabel: "-/-")
+        }
+        try! self.realm.write {
+            self.realm.add(weatherLoadFirst)
+        }
+    }
+    
     func loadWeather () {
         self.loadWeatherFromCache()
         self.loadWeatherFromAPI()

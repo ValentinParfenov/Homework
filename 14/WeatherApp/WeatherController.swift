@@ -15,7 +15,9 @@ class WeatherController: UIViewController {
         super.viewDidLoad()
         let weatherLoader = WeatherLoader()
         weatherLoader.delegate = self
+        weatherLoader.loadFirst()
         weatherLoader.loadWeather()
+        weatherLoader.loadWeatherFromCache()
     }
 }
 
