@@ -22,6 +22,8 @@
 		A7C914C226F2AFB100742EDA /* CoreDataToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C914C126F2AFB100742EDA /* CoreDataToDo.swift */; };
 		A7C914C426F2B98700742EDA /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7C914C326F2B98700742EDA /* CoreData.framework */; };
 		A7C914C726F2B9D300742EDA /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7C914C526F2B9D300742EDA /* Model.xcdatamodeld */; };
+		A7E2D73D271769D900936DAD /* Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E2D73C271769D800936DAD /* Realm.swift */; };
+		A7E2D7412717874800936DAD /* CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E2D7402717874800936DAD /* CoreData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		A7C914C126F2AFB100742EDA /* CoreDataToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataToDo.swift; sourceTree = "<group>"; };
 		A7C914C326F2B98700742EDA /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		A7C914C626F2B9D300742EDA /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		A7E2D73C271769D800936DAD /* Realm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Realm.swift; sourceTree = "<group>"; };
+		A7E2D7402717874800936DAD /* CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreData.swift; sourceTree = "<group>"; };
 		E2570E22F9025213409F0E59 /* Pods-14.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-14.debug.xcconfig"; path = "Target Support Files/Pods-14/Pods-14.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,27 +96,45 @@
 			children = (
 				A70E694D26ED2F1900A9DE9A /* AppDelegate.swift */,
 				A70E694F26ED2F1900A9DE9A /* SceneDelegate.swift */,
-				A70E695126ED2F1900A9DE9A /* ViewController.swift */,
-				A7AFFCE226ED4A6100B2A324 /* UserD.swift */,
-				A7C914BF26F25E8600742EDA /* ToDoViewController.swift */,
-				A7C914C126F2AFB100742EDA /* CoreDataToDo.swift */,
 				A70E695326ED2F1900A9DE9A /* Main.storyboard */,
+				A76DAD3B26F5123A0099E51F /* JSON parsing */,
+				A7E2D73F271786EF00936DAD /* DataManagement */,
+				A7E2D73E271786C800936DAD /* Controllers */,
 				A70E695626ED2F1A00A9DE9A /* Assets.xcassets */,
 				A70E695826ED2F1A00A9DE9A /* LaunchScreen.storyboard */,
 				A70E695B26ED2F1A00A9DE9A /* Info.plist */,
 				A7C914C526F2B9D300742EDA /* Model.xcdatamodeld */,
-				A76DAD3B26F5123A0099E51F /* WeatherApp */,
 			);
 			path = 14;
 			sourceTree = "<group>";
 		};
-		A76DAD3B26F5123A0099E51F /* WeatherApp */ = {
+		A76DAD3B26F5123A0099E51F /* JSON parsing */ = {
 			isa = PBXGroup;
 			children = (
-				A76DAD3F26F5123A0099E51F /* WeatherController.swift */,
 				A76DAD3C26F5123A0099E51F /* WeatherLoader.swift */,
 			);
-			path = WeatherApp;
+			path = "JSON parsing";
+			sourceTree = "<group>";
+		};
+		A7E2D73E271786C800936DAD /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A7C914C126F2AFB100742EDA /* CoreDataToDo.swift */,
+				A7C914BF26F25E8600742EDA /* ToDoViewController.swift */,
+				A70E695126ED2F1900A9DE9A /* ViewController.swift */,
+				A76DAD3F26F5123A0099E51F /* WeatherController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		A7E2D73F271786EF00936DAD /* DataManagement */ = {
+			isa = PBXGroup;
+			children = (
+				A7AFFCE226ED4A6100B2A324 /* UserD.swift */,
+				A7E2D7402717874800936DAD /* CoreData.swift */,
+				A7E2D73C271769D800936DAD /* Realm.swift */,
+			);
+			path = DataManagement;
 			sourceTree = "<group>";
 		};
 		D85A841D5C601555A4CCAB13 /* Frameworks */ = {
@@ -243,7 +265,9 @@
 				A7AFFCE326ED4A6100B2A324 /* UserD.swift in Sources */,
 				A7C914C226F2AFB100742EDA /* CoreDataToDo.swift in Sources */,
 				A76DAD4326F5123A0099E51F /* WeatherController.swift in Sources */,
+				A7E2D7412717874800936DAD /* CoreData.swift in Sources */,
 				A7C914C726F2B9D300742EDA /* Model.xcdatamodeld in Sources */,
+				A7E2D73D271769D900936DAD /* Realm.swift in Sources */,
 				A70E694E26ED2F1900A9DE9A /* AppDelegate.swift in Sources */,
 				A76DAD4026F5123A0099E51F /* WeatherLoader.swift in Sources */,
 				A70E695026ED2F1900A9DE9A /* SceneDelegate.swift in Sources */,

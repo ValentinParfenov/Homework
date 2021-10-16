@@ -1,26 +1,19 @@
 
 import Foundation
-import RealmSwift
-
-class TasksList: Object {
-    @objc dynamic var task = ""
-    @objc dynamic var completed = false
-}
+import UIKit
 
 class ToDoViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
-    let realm = try! Realm()
-    var data = [TasksList]()
-    var items: Results<TasksList>!
+    let realmManager = RealmManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        items = realm.objects(TasksList.self)
+        realmManager.items = realmManager.realm.objects(TasksList.self)
     }
     
-    @IBAction func addButton (){
+    @IBAction func addButton () {
         addNewTask()
     }
 
@@ -34,16 +27,9 @@ class ToDoViewController: UIViewController {
         }
 
         let saveAction = UIAlertAction(title: "Сохранить", style: .default) { action in
-            guard let text = alertTextField.text , !text.isEmpty else { return }
-
-            let task = TasksList()
-            task.task = text
-
-            try! self.realm.write {
-                self.realm.add(task)
-                print(task)
-            }
-            self.tableView.insertRows(at: [IndexPath.init(row: self.items.count-1, section: 0)], with: .middle)
+            guard let taskTitle = alertTextField.text, !taskTitle.isEmpty else { return }
+            self.realmManager.addTask(taskTitle)
+            self.tableView.insertRows(at: [IndexPath.init(row: self.realmManager.items.count-1, section: 0)], with: .middle)
         }
         
         let cancelAction = UIAlertAction(title: "Отмена", style: .destructive, handler: nil)
@@ -62,31 +48,23 @@ extension ToDoViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if items.count != 0 {
-            return items.count
+        if realmManager.items.count != 0 {
+            return realmManager.items.count
         }
-        return items.count
+        return realmManager.items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let item = items[indexPath.row]
+        let item = realmManager.items[indexPath.row]
         cell.textLabel?.text = item.task
         return cell
     }
-    
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             print("Deleted")
-
-            try! self.realm.write {
-                self.realm.delete(self.items[indexPath.row])
-                tableView.reloadData()
-            }
+            realmManager.deleteTask(tableView, forRowAt: indexPath)
         }
     }
 }
-
-
-

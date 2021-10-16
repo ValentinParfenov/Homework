@@ -1,74 +1,25 @@
 
 import Foundation
 import UIKit
-import CoreData
 
 class CoreDataToDo: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-
+    let coreData = SaveDataCoreData()
+    
     @IBAction func addButtonCore() {
         addNewTask()
     }
     
     @IBAction func refreshTableView() {
-        deleteTask()
-    }
-    
-    var tasks = [Tasks]()
-    
-    func saveTask (withTitle title: String) {
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
-        guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else { return }
-        
-        let taskObject = Tasks(entity: entity, insertInto: context)
-        taskObject.title = title
-        
-        do {
-            try context.save()
-            tasks.append(taskObject)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-    }
-    
-    func deleteTask() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<Tasks> = Tasks.fetchRequest()
-        if let tasks = try? context.fetch(fetchRequest) {
-            for task in tasks {
-                context.delete(task)
-                tableView.reloadData()
-            }
-        }
-        
-        do {
-            try context.save()
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
+        coreData.deleteTaskFromCache(tableView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest: NSFetchRequest<Tasks> = Tasks.fetchRequest()
-        
-        do {
-            tasks = try context.fetch(fetchRequest)
-        } catch let error as NSError {
-            print(error.localizedDescription)
-            }
+        coreData.readTaskFromCache()
     }
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -87,7 +38,7 @@ class CoreDataToDo: UIViewController {
 
             let tf = alert.textFields?.first
             if let newTask  = tf?.text {
-                self.saveTask(withTitle: newTask)
+                self.coreData.saveTask(withTitle: newTask)
                 self.tableView.reloadData()
             }
         }
@@ -109,15 +60,15 @@ extension CoreDataToDo: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tasks.count != 0 {
-            return tasks.count
+        if coreData.tasks.count != 0 {
+            return coreData.tasks.count
         }
-        return tasks.count
+        return coreData.tasks.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "coreCell", for: indexPath)
-        let task = tasks[indexPath.row]
+        let task = coreData.tasks[indexPath.row]
         cell.textLabel?.text = task.title
         return cell
     }

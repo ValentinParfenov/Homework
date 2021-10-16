@@ -1,36 +1,22 @@
 
 import Foundation
 import SwiftyJSON
-import RealmSwift
 
 protocol LoadWeatherDelegate {
     func loaded (currentTemperature: String, feelsLikeTemperature: String, minTemperature: String, maxTemperature: String, nameTownLabel: String)
 }
 
-class WeatherDataLoader: Object {
-    @objc dynamic var currentTemperature = ""
-    @objc dynamic var feelsLikeTemperature = ""
-    @objc dynamic var nameTown = ""
-    @objc dynamic var minTemperature = ""
-    @objc dynamic var maxTemperature = ""
-}
-
 class WeatherLoader {
-    let realm = try! Realm()
-    var dataW = [WeatherDataLoader]()
-    var weatherData: Results<WeatherDataLoader>!
     var delegate: LoadWeatherDelegate?
+    let realmManager = RealmWeatherManager()
     
     func loadFirst () {
-        let weatherLoadFirst = realm.objects(WeatherDataLoader.self)
         let newWeather = WeatherDataLoader()
         
         if newWeather.currentTemperature.isEmpty, newWeather.feelsLikeTemperature.isEmpty, newWeather.nameTown.isEmpty, newWeather.minTemperature.isEmpty, newWeather.maxTemperature.isEmpty {
             delegate?.loaded(currentTemperature: "-/-", feelsLikeTemperature: "-/-", minTemperature: "-/-", maxTemperature: "-/-", nameTownLabel: "-/-")
         }
-        try! self.realm.write {
-            self.realm.add(weatherLoadFirst)
-        }
+        realmManager.loadWeatherFirst()
     }
     
     func loadWeather () {
@@ -39,7 +25,7 @@ class WeatherLoader {
     }
     
     func loadWeatherFromCache () {
-        let weatherDataCache = realm.objects(WeatherDataLoader.self).last
+        let weatherDataCache = realmManager.realm.objects(WeatherDataLoader.self).last
         
         if weatherDataCache != nil {
             DispatchQueue.main.async {
@@ -56,7 +42,7 @@ class WeatherLoader {
     
     func loadWeatherFromAPI () {
         let key = "bc8fc8363c5c900dd10131ef7dfefcbb"
-        let town = "Sydney"
+        let town = "Volgograd"
         let urlCurrentWeather = "https://api.openweathermap.org/data/2.5/weather?q=\(town)&units=metric&appid=\(key)"
         let url = URL (string: urlCurrentWeather)
         
@@ -82,10 +68,7 @@ class WeatherLoader {
                         maxTemperature: weatherAPIDataLoader.maxTemperature,
                         nameTownLabel: weatherAPIDataLoader.nameTown
                     )
-
-                    try! self.realm.write {
-                        self.realm.add(weatherAPIDataLoader)
-                    }
+                    self.realmManager.loadWeatherFromAPI()
                 }
             }
             

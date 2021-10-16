@@ -1,7 +1,5 @@
 
 import UIKit
-import SwiftyJSON
-import RealmSwift
 
 class WeatherController: UIViewController {
     
