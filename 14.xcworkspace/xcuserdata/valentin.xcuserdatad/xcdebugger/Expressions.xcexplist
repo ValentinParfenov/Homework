@@ -3,6 +3,59 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "WeatherController.townTextAction(_:):WeatherController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "realmManager.realm.objects(WeatherTownLoader.self).last&#10;&#10;">
+            </PersistentString>
+            <PersistentString
+               value = "self.townTextField.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WeatherController.loaded(currentTemperature:feelsLikeTemperature:minTemperature:maxTemperature:humidity:pressure:nameTownLabel:):WeatherController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Double(currentWeather)">
+            </PersistentString>
+            <PersistentString
+               value = "term">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WeatherLoader.loadWeatherFromAPI():WeatherLoader.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "nameTownCache">
+            </PersistentString>
+            <PersistentString
+               value = "nameTownCache?.townName">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WeatherLoader.loadWeather():WeatherLoader.swift">
+      </ContextState>
+      <ContextState
+         contextName = "RealmTownManager.saveTownName():Realm.swift">
+      </ContextState>
+      <ContextState
+         contextName = "WeatherController.viewDidLoad():WeatherController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "timeLabel.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WeatherController.updateNewInfo(_:):WeatherController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in WeatherLoader.loadWeather():WeatherLoader.swift">
+      </ContextState>
+      <ContextState
          contextName = "closure #1 in WeatherLoader.loadWeather():WeatherLoader.swift">
          <PersistentStrings>
             <PersistentString
@@ -11,13 +64,79 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "WeatherLoader.loadWeather():WeatherLoader.swift">
+         contextName = "closure #1 in WeatherLoader.loadWeatherFromAPI():WeatherLoader.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "weatherWeatherinfo?.value(forKey: &quot;main&quot;)">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "closure #1 in closure #1 in WeatherLoader.loadWeather():WeatherLoader.swift">
+         contextName = "closure #1 in WeatherLoader.loadWeatherFromCache():WeatherLoader.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "weatherTownNameCache!.townName">
+            </PersistentString>
+            <PersistentString
+               value = "weatherDetailDataCache!.descriptionWeather">
+            </PersistentString>
+            <PersistentString
+               value = "&quot;\(weatherDetailDataCache!.descriptionWeather)&quot;">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "WeatherController.viewDidLoad():WeatherController.swift">
+         contextName = "WeatherLoader.init():WeatherLoader.swift">
+      </ContextState>
+      <ContextState
+         contextName = "WeatherTownLoader.init():Realm.swift">
+      </ContextState>
+      <ContextState
+         contextName = "WeatherLoader.loadWeatherFromCache():WeatherLoader.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "realmManager.realm.objects(WeatherTownName.self).last">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WeatherController.loadedDetail(main:description:icon:):WeatherController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "cloudsDescription.description">
+            </PersistentString>
+            <PersistentString
+               value = "main">
+            </PersistentString>
+            <PersistentString
+               value = "description">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "RealmTownManager.init():Realm.swift">
+      </ContextState>
+      <ContextState
+         contextName = "WeatherController.setTime():WeatherController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "timeLabel.text">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "WeatherController.updateNameTown(text:):WeatherController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in WeatherLoader.loadWeatherFromAPI():WeatherLoader.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "json[&quot;weather&quot;]">
+            </PersistentString>
+            <PersistentString
+               value = "description">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

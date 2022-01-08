@@ -2,38 +2,22 @@
 import Foundation
 import RealmSwift
 
-class TasksList: Object {
-    @objc dynamic var task = ""
-    @objc dynamic var completed = false
-}
-
 class WeatherDataLoader: Object {
-    @objc dynamic var currentTemperature = ""
-    @objc dynamic var feelsLikeTemperature = ""
-    @objc dynamic var nameTown = ""
-    @objc dynamic var minTemperature = ""
-    @objc dynamic var maxTemperature = ""
+    @Persisted dynamic var currentTemperature = ""
+    @Persisted dynamic var feelsLikeTemperature = ""
+    @Persisted dynamic var nameTown = ""
+    @Persisted dynamic var minTemperature = ""
+    @Persisted dynamic var maxTemperature = ""
+    @Persisted dynamic var pressure = ""
+    @Persisted dynamic var humidity = ""
 }
 
-class RealmManager {
-    let realm = try! Realm()
-    var data = [TasksList]()
-    var items: Results<TasksList>!
-    
-    func addTask (_ title: String) {
-        let task = TasksList()
-        task.task = title
-        try! self.realm.write {
-            self.realm.add(task)
-        }
-    }
-    
-    func deleteTask (_ tableView: UITableView, forRowAt indexPath: IndexPath) {
-        try! self.realm.write {
-            self.realm.delete(self.items[indexPath.row])
-            tableView.reloadData()
-        }
-    }
+class WeatherDetail: Object {
+    @Persisted dynamic var descriptionWeather = ""
+}
+
+class WeatherTownName: Object {
+    @Persisted dynamic var townName = ""
 }
 
 class RealmWeatherManager {
@@ -50,8 +34,36 @@ class RealmWeatherManager {
     
     func loadWeatherFromAPI () {
         let weatherAPIDataLoader = WeatherDataLoader()
+            try! self.realm.write {
+                self.realm.add(weatherAPIDataLoader)
+        }
+    }
+}
+
+class RealmDetailWeather {
+    let realm = try! Realm()
+    var dataWD = [WeatherDetail]()
+    var weatherDetailData: Results<WeatherDetail>!
+    
+    func loadWeatherDetailFromAPI () {
+        let weatherDetailAPILoader = WeatherDetail()
+            try! self.realm.write {
+                self.realm.add(weatherDetailAPILoader)
+        }
+    }
+}
+    
+class RealmTownManager {
+    let realm = try! Realm()
+    var dataW = [WeatherTownName]()
+    var townData: Results<WeatherTownName>!
+
+    func saveTownName (townName: String) {
+        let weatherTownName = WeatherTownName()
+        weatherTownName.townName = townName
+
         try! self.realm.write {
-            self.realm.add(weatherAPIDataLoader)
+            self.realm.add(weatherTownName)
         }
     }
 }
